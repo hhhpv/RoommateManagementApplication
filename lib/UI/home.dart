@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 class Home extends StatelessWidget{
-  var list=["a","b"];
+  var list=["Hitman ","Rocky ","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"];
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -23,35 +23,42 @@ class Home extends StatelessWidget{
                   title: Text("Manage Expense"),
                   trailing: Icon(Icons.attach_money),
                 ),
+                new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
                   title: Text("View Expense"),
                   trailing: Icon(Icons.attach_money),
                 ),
+                new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
                   title: Text("Logout"),
                   trailing: Icon(Icons.subdirectory_arrow_left)
                 ),
+                new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
                   title: Text("License"),
                   trailing: Icon(Icons.note),
-                )
+                ),
+                new Divider(color: Colors.black,height: 0,indent: 0,),
               ],
           )
       ),
-      backgroundColor: Colors.grey.shade200,
-      body: new Center(
-      child:new Column(
-        children: <Widget>[
-          new Card(child: Text("GroupId: ",style: new TextStyle(fontWeight: FontWeight.w500,fontSize: 54.0,fontStyle: FontStyle.italic,fontFamily: "Monotype Corvisa")),color: Colors.grey.shade200),
-          new Card(child: Text("Members: ",style: new TextStyle(fontWeight: FontWeight.w500,fontSize: 34.0,fontStyle: FontStyle.italic),textAlign: TextAlign.left,),color: Colors.grey.shade200),
-          new ListView.builder(itemCount:list.length,itemBuilder: (BuildContext context,int index){
-            return new Card(child: Text("${index+1}. ${list[index]}",style: new TextStyle(fontSize: 24.0),));
-            },
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,)
-          ],
-        )
-      )
+      backgroundColor: Colors.green.withAlpha(500),
+      body:new Stack(children: <Widget>[
+        new Positioned.fill(child: Image.asset('images/roomies1.jpeg',fit: BoxFit.fill)),
+        new Column(
+          children: <Widget>[
+            new Card(shape: StadiumBorder(side: BorderSide(width:2.0)),child:InkWell(splashColor:Colors.white.withAlpha(250) ,onTap: ()=>debugPrint("groupId"),child: Text("GroupId: ",style: new TextStyle(fontWeight: FontWeight.w500,fontSize: 54.0,fontStyle: FontStyle.italic,fontFamily: "Monotype Corvisa"))),color: Colors.white.withAlpha(150),elevation: 150.0),
+            new Card(shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),child: Text("Members: ",style: new TextStyle(fontWeight: FontWeight.w500,fontSize: 34.0,fontStyle: FontStyle.italic),textAlign: TextAlign.left,),color: Colors.white.withAlpha(150)),
+            new Expanded(
+              child: new ListView.builder(itemCount:list.length,itemBuilder: (BuildContext context,int index){
+                return new Padding(padding: EdgeInsets.all(5.0),child: Card(color:Colors.white.withAlpha(150),shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(7.0)),child: Text("${index+1}. ${list[index]}",style: new TextStyle(fontSize: 24.0),textAlign: TextAlign.left,textScaleFactor: 1.2,))
+                    );
+                },
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true),
+            )
+          ])
+        ])
     );
   }
 
