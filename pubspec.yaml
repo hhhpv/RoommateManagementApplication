@@ -70,3 +70,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+  fonts:
+    - family : Dance
+      fonts:
+        - asset: fonts/dance.ttf
+    - family : Lobster
+      fonts:
+        - asset: fonts/lobster.ttf
+    - family : Ubuntu
+      fonts:
+        - asset: fonts/ubuntu.ttf
