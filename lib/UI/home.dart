@@ -30,8 +30,13 @@ class Home extends StatelessWidget{
                 ),
                 new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
-                  title: Text("Logout"),
-                  trailing: Icon(Icons.subdirectory_arrow_left)
+                  title: Text("Join/Leave Group"),
+                  trailing: Icon(Icons.group),
+                ),
+                new Divider(color: Colors.black,height: 0,indent: 0,),
+                ListTile(
+                    title: Text("Logout"),
+                    trailing: Icon(Icons.subdirectory_arrow_left)
                 ),
                 new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
