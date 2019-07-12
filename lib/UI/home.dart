@@ -10,7 +10,7 @@ class Home extends StatelessWidget{
         actions: <Widget>[
           new IconButton(
               icon: new Icon(Icons.help),
-              onPressed: ()=>debugPrint("help tapped"),
+              onPressed: ()=>debugPrint("Help Tapped!"),
               tooltip: "Need Help?"
           )
         ],
