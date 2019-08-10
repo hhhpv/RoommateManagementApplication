@@ -10,12 +10,13 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   http: ^0.12.0
+  shared_preferences: ^0.5.3+2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -45,6 +46,7 @@ flutter:
     - images/roomies1.jpeg
     - images/roomies1.jpg
     - images/roomies2.jpg
+    - images/dollar.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
