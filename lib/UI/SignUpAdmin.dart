@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:roomate/UI/signup.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 
 class SignUpAdminForm extends StatefulWidget {
   @override
   _SignUpAdminFormState createState()=> _SignUpAdminFormState();
 }
 class _SignUpAdminFormState extends State<SignUpAdminForm>{
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final rePasswordController = TextEditingController();
+  final groupIdController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    final nameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final rePasswordController = TextEditingController();
+    var response;
     @override
     void dispose() {
       // Clean up the controller when the widget is disposed.
@@ -22,7 +28,23 @@ class _SignUpAdminFormState extends State<SignUpAdminForm>{
       passwordController.dispose();
       passwordController.dispose();
       rePasswordController.dispose();
+      groupIdController.dispose();
       super.dispose();
+    }
+
+    void  signup() async {
+      Map data = {
+        "username":nameController.text,
+        "email":emailController.text,
+        "password":passwordController.text,
+        "groupId":groupIdController.text
+      };
+      response = await http.post("http://192.168.1.162:4000/signUp/admin",headers: {'Content-type': 'application/json'},
+          body: jsonEncode(data));
+      var r=(jsonDecode(response.body));
+      debugPrint(r.toString()+ " result ");
+      setState(() {
+      });
     }
 
     return new Scaffold(
@@ -70,6 +92,14 @@ class _SignUpAdminFormState extends State<SignUpAdminForm>{
                 new Padding(padding: EdgeInsets.fromLTRB(0, 30.0, 0, 0)),
 
                 new Container(
+                    margin: EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
+                    child:new TextField(controller: groupIdController, obscureText:true, decoration: InputDecoration(hintText: ' Enter GroupID', labelText: "GroupID: ", contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0)), style: new TextStyle(fontSize: 25.0,
+                        fontFamily: "Lobster"), )
+                ),
+
+                new Padding(padding: EdgeInsets.fromLTRB(0, 30.0, 0, 0)),
+
+                new Container(
                   margin: EdgeInsets.fromLTRB(70.0, 0, 70.0, 0),
                   child:new RaisedButton(child: new Text("SIGN UP", style: new TextStyle(fontFamily: "Ubuntu", fontWeight: FontWeight.w900, fontSize: 15), )
                     , onPressed: () {
@@ -88,6 +118,7 @@ class _SignUpAdminFormState extends State<SignUpAdminForm>{
                             ),
                           );
                           Scaffold.of(context).showSnackBar(snackBar);
+                          signup();
                         }else{
                           final snackBar = SnackBar(
                             content: Text('Invalid E-Mail!'),

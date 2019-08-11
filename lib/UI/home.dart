@@ -1,8 +1,61 @@
 import 'package:flutter/material.dart';
-class Home extends StatelessWidget{
+import 'package:roomate/UI/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:roomate/UI/home.dart';
+
+class Home extends StatefulWidget{
+  @override
+  _HomeForm createState()=> _HomeForm();
+}
+
+class _HomeForm extends State<Home>{
   var list=["Hitman ","Rocky ","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"];
+  var username="Person",email="person@mail.com",groupId,token,response,r,result;
+  _retrieveUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username=prefs.getString('username');
+    email=prefs.getString('email');
+    token=prefs.getString('token');
+    groupId=prefs.getString('groupId');
+    _room_mates_list();
+    setState(() {
+    });
+  }
+
+  _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('username');
+    await prefs.remove('email');
+    await prefs.remove('token');
+    await prefs.remove('groupId');
+    await prefs.remove("loggedIn");
+    Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new LoginForm()));
+  }
+
+  void  _room_mates_list() async {
+    Map data = {
+      "username":username,
+      "email":email,
+      "token":token,
+      "groupId":groupId
+    };
+    response = await http.post("http://192.168.1.162:4000/profile/get-room-mates",headers: {'Content-type': 'application/json'}, body: jsonEncode(data));
+    r=(jsonDecode(response.body));
+    var arr=r['data']['room_mates'];
+    list.clear();
+    if(arr!=null) {
+      for (int i = 0; i < arr.length; i++) {
+        list.add(arr[i]['username']);
+      }
+    }
+    setState(() { });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _retrieveUser();
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Room-Mate"),
@@ -18,7 +71,7 @@ class Home extends StatelessWidget{
       drawer: Drawer(
           child:new ListView(
               children: <Widget>[
-                new UserAccountsDrawerHeader(accountName: new Text("Person"), accountEmail: new Text("person@mail.com"),currentAccountPicture: CircleAvatar(backgroundColor:Colors.grey.shade400,child: new Text("P",style: new TextStyle(color:Colors.white,fontSize: 50.0),),),decoration: new BoxDecoration(color: Colors.tealAccent.shade700),),
+                new UserAccountsDrawerHeader(accountName: new Text(username), accountEmail: new Text(email),currentAccountPicture: CircleAvatar(backgroundColor:Colors.grey.shade400,child: new Text(username[0],style: new TextStyle(color:Colors.white,fontSize: 50.0),),),decoration: new BoxDecoration(color: Colors.tealAccent.shade700),),
                 ListTile(
                   title: Text("Manage Expense"),
                   trailing: Icon(Icons.attach_money),
@@ -36,7 +89,10 @@ class Home extends StatelessWidget{
                 new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
                     title: Text("Logout"),
-                    trailing: Icon(Icons.subdirectory_arrow_left)
+                    trailing: Icon(Icons.subdirectory_arrow_left),
+                  onTap: ()=>{
+                      _logout()
+                  },
                 ),
                 new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
