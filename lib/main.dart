@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: new LoginForm(),
+      routes: <String, WidgetBuilder>{
+        '/homescreen': (context) => Home(),
+      },
     );
   }
 }

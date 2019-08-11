@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/*
+The following class has been added for a feature that demonstrates the future scope of the application
+*/
+
 class join_leave extends StatefulWidget {
   _join_leaveState createState() => _join_leaveState();
 }
@@ -7,17 +11,7 @@ class join_leave extends StatefulWidget {
 class _join_leaveState extends State<join_leave> {
   TextEditingController _textController = TextEditingController();
 
-  final List<String> _listViewData = [
-    "Inducesmile.com",
-    "Flutter Dev",
-    "Android Dev",
-    "iOS Dev!",
-    "React Native Dev!",
-    "React Dev!",
-    "express Dev!",
-    "Laravel Dev!",
-    "Angular Dev!",
-  ];
+  final List<String> _listViewData = ["1","2","3"];
 
   List<String> _newData = [];
 

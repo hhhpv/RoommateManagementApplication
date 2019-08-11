@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:roomate/UI/login.dart';
+import 'package:roomate/UI/manage_expense.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:roomate/UI/home.dart';
+import 'package:roomate/UI/view_expense.dart';
+import 'package:roomate/UI/license.dart';
 
 class Home extends StatefulWidget{
   @override
@@ -75,17 +78,22 @@ class _HomeForm extends State<Home>{
                 ListTile(
                   title: Text("Manage Expense"),
                   trailing: Icon(Icons.attach_money),
+                  onTap: ()=>{Navigator.of(context).push(new MaterialPageRoute(builder: (context)=> new manage_expense()))},
                 ),
                 new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
                   title: Text("View Expense"),
                   trailing: Icon(Icons.attach_money),
+                  onTap: ()=>{Navigator.of(context).push(new MaterialPageRoute(builder: (context)=> new view_expense()))},
                 ),
+                /*
+                For future scope
                 new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
                   title: Text("Join/Leave Group"),
                   trailing: Icon(Icons.group),
                 ),
+                */
                 new Divider(color: Colors.black,height: 0,indent: 0,),
                 ListTile(
                     title: Text("Logout"),
@@ -98,6 +106,7 @@ class _HomeForm extends State<Home>{
                 ListTile(
                   title: Text("License"),
                   trailing: Icon(Icons.note),
+                  onTap: ()=>{Navigator.of(context).push(new MaterialPageRoute(builder: (context)=> new LicenseForm()))},
                 ),
                 new Divider(color: Colors.black,height: 0,indent: 0,),
               ],

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:roomate/UI/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:roomate/UI/signup.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -20,7 +21,8 @@ class _LoginFormState extends State<LoginForm>{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     loggedIn=prefs.getBool("loggedIn") ?? false;
     if(loggedIn){
-      Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Home()));
+      Route home = MaterialPageRoute(builder: (context) => Home());
+      Navigator.of(context).pushReplacementNamed('/homescreen');
     }
   }
 
@@ -128,6 +130,11 @@ class _LoginFormState extends State<LoginForm>{
     info="password mismatch";
     }
     },),),
+
+      new FlatButton(onPressed: ()=>{Navigator.of(context).push(new MaterialPageRoute(builder: (context)=>new SignUpForm()))}, child: Text("New User? SignUp Here",style: new TextStyle(fontSize: 12,fontFamily: "Ubuntu"),))
+
+      ,new Padding(padding: EdgeInsets.fromLTRB(0, 30.0, 0, 0)),
+
     ])
     );
     })

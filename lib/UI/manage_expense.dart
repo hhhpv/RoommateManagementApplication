@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class manage_expense extends StatefulWidget{
   @override
@@ -12,23 +13,39 @@ class manage_expense extends StatefulWidget{
 class _manage_expenseState extends State<manage_expense>{
   String _selectedLocation,_selectedOperation;
   int _selectedMonth;String _selectedYear;
+  var username,token,groupId,email;
+  var response_result;
   List<String> _locations = ['A', 'B', 'C', 'D'];
   static List<int> month=[1,2,3,4,5,6,7,8,9,10,11,12];
   static List<String> operation=["Add","Delete"];
   static List<String> year=new List<String>();
   static List<String> cat=new List<String>();
   var response;
+  @override
+  void initState() {
+    // TODO: implement initState
+    _retrieveUser();
+    super.initState();
+
+  }
+  _retrieveUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    username=prefs.getString('username');
+    email=prefs.getString('email');
+    token=prefs.getString('token');
+    groupId=prefs.getString('groupId');
+  }
   void  ret() async {
     Map data = {
-      "username":"hit",
-      "email":"hit@mail.com",
-      "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhpdCIsImVtYWlsIjoiaGl0QG1haWwuY29tIiwiaWF0IjoxNTYyMjM3NzMzLCJleHAiOjE1NjQ4Mjk3MzN9.WJESiaslOqG94RFy-tJ5gz7VRm27UFguzIPOV7Z3mlE"
+      "username":username,
+      "email":email,
+      "token":token
     };
     year.clear();
     for(var i=2019;i<3000;i++){
       year.add(i.toString());
     }
-    response = await http.post("http://192.168.1.2:4000/profile/get-bill-category",headers: {'Content-type': 'application/json'},
+    response = await http.post("http://192.168.1.162:4000/profile/get-bill-category",headers: {'Content-type': 'application/json'},
         body: jsonEncode(data));
     var r=(jsonDecode(response.body));
     cat.clear();
@@ -40,35 +57,43 @@ class _manage_expenseState extends State<manage_expense>{
 
   Future<bool>  updateExpense(String category,int month,int year,double amount) async {
     Map data = {
-      "username":"hit",
+      "username":username,
       "category":category,
-      "groupId":"1",
+      "groupId":groupId,
       "month":month,
       "year":year,
       "amount":amount,
-      "email":"hit@mail.com",
-      "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhpdCIsImVtYWlsIjoiaGl0QG1haWwuY29tIiwiaWF0IjoxNTYyMjM3NzMzLCJleHAiOjE1NjQ4Mjk3MzN9.WJESiaslOqG94RFy-tJ5gz7VRm27UFguzIPOV7Z3mlE"
+      "email":email,
+      "token":token
     };
-    response = await http.post("http://192.168.1.2:4000/profile/add-shared-expense",headers: {'Content-type': 'application/json'},
+    response = await http.post("http://192.168.1.162:4000/profile/add-shared-expense",headers: {'Content-type': 'application/json'},
         body: jsonEncode(data));
     print(response.body);
+    response_result=(jsonDecode(response.body));
+    setState(() {
+
+    });
     return true;
   }
 
   Future<bool>  deleteExpense(String category,int month,int year,double amount) async {
     Map data = {
-      "username":"hit",
+      "username":username,
       "category":category,
-      "groupId":"1",
+      "groupId":groupId,
       "month":month,
       "year":year,
       "amount":amount,
-      "email":"hit@mail.com",
-      "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhpdCIsImVtYWlsIjoiaGl0QG1haWwuY29tIiwiaWF0IjoxNTYyMjM3NzMzLCJleHAiOjE1NjQ4Mjk3MzN9.WJESiaslOqG94RFy-tJ5gz7VRm27UFguzIPOV7Z3mlE"
+      "email":email,
+      "token":token
     };
-    response = await http.post("http://192.168.1.2:4000/profile/delete-shared-expense",headers: {'Content-type': 'application/json'},
+    response = await http.post("http://192.168.1.162:4000/profile/delete-shared-expense",headers: {'Content-type': 'application/json'},
         body: jsonEncode(data));
     print(response.body);
+    response_result=(jsonDecode(response.body));
+    setState(() {
+
+    });
     return true;
   }
 
@@ -198,8 +223,15 @@ class _manage_expenseState extends State<manage_expense>{
               return showDialog(
                 context: context,
                 builder: (context) {
+                  if(response_result!=null){
+                    return AlertDialog(
+                      content: Text(response_result["data"]['message']),
+                      actions: <Widget>[new RaisedButton(child: new Text("OK",style: new TextStyle(color: Colors.white),),onPressed:(){ Navigator.of(context).pop();},color:Colors.teal,)],
+                    );
+                  }
                   return AlertDialog(
-                    content: Text("Adding"),
+                    content: Text("Done!"),
+                    actions: <Widget>[new RaisedButton(child: new Text("OK",style: new TextStyle(color: Colors.white),),onPressed:(){ Navigator.of(context).pop(); },color:Colors.teal)],
                   );
                 },
               );
